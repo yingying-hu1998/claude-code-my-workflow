@@ -1,53 +1,53 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Quarto/**/*.qmd"
-  - "docs/**"
+  - "Paper/**/*.tex"
+  - "Code/**"
 ---
 
 # Task Completion Verification Protocol
 
 **At the end of EVERY task, Claude MUST verify the output works correctly.** This is non-negotiable.
 
-## For Quarto/HTML Slides:
-1. Run `./scripts/sync_to_docs.sh` (or `./scripts/sync_to_docs.sh LectureN`) to render and deploy
-2. Open the HTML in browser: `open docs/slides/LectureX.html` (macOS) or `xdg-open` (Linux)
-3. Verify images display by reading 2-3 image files to confirm valid content
-4. Check HTML source for correct image paths
-5. Check for overflow by scanning dense slides
-6. Verify environment parity: every Beamer box environment has a CSS equivalent in the QMD
-7. Report verification results
+## For LaTeX Papers:
+1. Compile with latexmk: `latexmk -xelatex -interaction=nonstopmode paper.tex`
+2. Check for compilation errors and undefined citations
+3. Check for overfull hbox warnings (> 10pt in body text)
+4. Open the PDF to verify figures/tables render correctly
+5. Verify all `\ref{}` and `\cite{}` resolve correctly
+6. Report verification results
 
-## For LaTeX/Beamer Slides:
-1. Compile with xelatex and check for errors
-2. Open the PDF to verify figures render (`open` on macOS, `xdg-open` on Linux)
-3. Check for overfull hbox warnings
-
-## For TikZ Diagrams in HTML/Quarto:
-1. Browsers **cannot** display PDF images inline — ALWAYS convert to SVG
-2. Use SVG (vector format) for crisp rendering: `pdf2svg input.pdf output.svg`
-3. **NEVER use PNG for diagrams** — PNG is raster and looks blurry
-4. Verify SVG files contain valid XML/SVG markup
-5. Copy SVGs to `docs/Figures/LectureX/` via `sync_to_docs.sh`
-6. **Freshness check:** Before using any TikZ SVG, verify extract_tikz.tex matches current Beamer source
-
-## For R Scripts:
-1. Run `Rscript scripts/R/filename.R`
-2. Verify output files (PDF, RDS) were created with non-zero size
+## For Analysis Scripts (R/Stata/Python/Matlab):
+1. Run the script: `Rscript Code/baseline/script.R` (or equivalent)
+2. Verify output files (tables, figures) were created with non-zero size
 3. Spot-check estimates for reasonable magnitude
+4. Verify tolerance matching if replicating published results
+5. Check that figures saved to `Figures/` and tables to `Tables/`
+
+## For Figures:
+1. Verify figure files exist in `Figures/` directory
+2. Check file format (PDF or PNG, 300 DPI minimum)
+3. Open figure to confirm it displays correctly
+4. Verify transparent background if specified
+5. Check that LaTeX can find and include the figure
+
+## For Tables:
+1. Verify table files exist in `Tables/` directory
+2. Check format (LaTeX-ready `.tex` files)
+3. Verify table compiles in paper without errors
+4. Check alignment and formatting
 
 ## Common Pitfalls:
-- **PDF images in HTML**: Browsers don't render PDFs inline → convert to SVG
-- **Relative paths**: `../Figures/` works from `Quarto/` but not from `docs/slides/` → use `sync_to_docs.sh`
+- **Absolute paths**: Always use relative paths from repo root
+- **Missing files**: Verify all referenced figures/tables exist before compiling
+- **Undefined citations**: Check Bibliography_base.bib has all entries
 - **Assuming success**: Always verify output files exist AND contain correct content
-- **Stale TikZ SVGs**: extract_tikz.tex diverges from Beamer source → always diff-check
 
 ## Verification Checklist:
 ```
 [ ] Output file created successfully
-[ ] No compilation/render errors
-[ ] Images/figures display correctly
-[ ] Paths resolve in deployment location (docs/)
-[ ] Opened in browser/viewer to confirm visual appearance
+[ ] No compilation/execution errors
+[ ] Figures/tables display correctly
+[ ] All references resolve (citations, figures, tables)
+[ ] Opened PDF/output to confirm visual appearance
 [ ] Reported results to user
 ```

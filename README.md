@@ -1,5 +1,7 @@
 # My Claude Code Setup
 
+> **Adapted for Economics Paper Workflows.** This instance has been customized for LaTeX paper drafting, figure/table generation, and replication packages using Stata/Python/Matlab. Slide-specific infrastructure (Beamer/Quarto) has been disabled but remains available in `.claude/*/disabled/` directories.
+
 > **Work in progress.** This is not meant to be a polished guide for everyone. It's mostly a summary of how I've been using Claude Code for academic work — slides, papers, data analysis, and more. I keep learning new things, and as I do, I keep updating these files. This is just a way for me to share what I've figured out with friends and colleagues.
 
 **Live site:** [psantanna.com/claude-code-my-workflow](https://psantanna.com/claude-code-my-workflow/)
