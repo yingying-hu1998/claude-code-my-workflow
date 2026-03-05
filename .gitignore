@@ -19,7 +19,10 @@
 *-blx.bib
 
 # Compiled PDFs (uncomment to track specific PDFs)
-# *.pdf
+*.pdf
+
+# Paper directory (LaTeX working files and outputs)
+Paper/
 
 # Python
 __pycache__/
