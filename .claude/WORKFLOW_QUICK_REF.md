@@ -48,26 +48,27 @@ Repeat
 
 ---
 
-## Non-Negotiables (Customize These)
+## Non-Negotiables
 
-<!-- Replace with YOUR project's locked-in preferences -->
-
-- [YOUR PATH CONVENTION] (e.g., `here::here()` for R, relative paths for LaTeX)
-- [YOUR SEED CONVENTION] (e.g., `set.seed()` once at top for stochastic code)
-- [YOUR FIGURE STANDARDS] (e.g., white bg, 300 DPI, custom theme)
-- [YOUR COLOR PALETTE] (e.g., institutional colors)
-- [YOUR TOLERANCE THRESHOLDS] (e.g., 1e-6 for point estimates)
+- **Compilation:** latexmk -xelatex for all LaTeX papers
+- **Path convention:** Relative paths from repo root (e.g., `Figures/fig1.pdf`)
+- **Seed convention:** `set.seed(20260305)` once at top of all stochastic scripts
+- **Figure standards:** Transparent background, 300 DPI, institutional colors
+- **Color palette:** [Customize: Primary #012169, Gold #f2a900, Gray #525252]
+- **Tolerance thresholds:** Point estimates 1e-6, SEs 1e-4, p-values same significance
+- **Replication:** Strict tolerance matching (flag near-misses, investigate)
 
 ---
 
 ## Preferences
 
-<!-- Fill in as you discover your working style -->
-
-**Visual:** [How you want figures/plots handled]
-**Reporting:** [Concise bullets? Detailed prose? Details on request?]
+**Visual:** Figures with transparent bg, institutional colors, minimal theme
+**Reporting:** Concise bullets for verification; detailed prose for reviews
 **Session logs:** Always (post-plan, incremental, end-of-session)
-**Replication:** [How strict? Flag near-misses?]
+**Replication:** Strict — flag any tolerance miss, investigate root cause
+**Paper structure:** Intro → Model → Empirics → Results → Robustness → Conclusion
+**Code organization:** Baseline replication first, then extensions
+**Multi-language:** Stata/Python/Matlab (see `.claude/rules/multi-language-conventions.md`)
 
 ---
 

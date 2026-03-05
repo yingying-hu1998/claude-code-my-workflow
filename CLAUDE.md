@@ -5,8 +5,8 @@
      Keep this file under ~150 lines — Claude loads it every session.
      See the guide at docs/workflow-guide.html for full documentation. -->
 
-**Project:** [YOUR PROJECT NAME]
-**Institution:** [YOUR INSTITUTION]
+**Project:** Econ Paper Workflow Template
+**Institution:** ZZX
 **Branch:** main
 
 ---
@@ -15,7 +15,7 @@
 
 - **Plan first** -- enter plan mode before non-trivial tasks; save plans to `quality_reports/plans/`
 - **Verify after** -- compile/render and confirm output at the end of every task
-- **Single source of truth** -- Beamer `.tex` is authoritative; Quarto `.qmd` derives from it
+- **Single source of truth** -- LaTeX `.tex` is authoritative; figures/tables/code derive from it
 - **Quality gates** -- nothing ships below 80/100
 - **[LEARN] tags** -- when corrected, save `[LEARN:category] wrong → right` to MEMORY.md
 
@@ -28,16 +28,19 @@
 ├── CLAUDE.MD                    # This file
 ├── .claude/                     # Rules, skills, agents, hooks
 ├── Bibliography_base.bib        # Centralized bibliography
-├── Figures/                     # Figures and images
+├── Figures/                     # Generated figures
+├── Tables/                      # Generated tables
 ├── Preambles/header.tex         # LaTeX headers
-├── Slides/                      # Beamer .tex files
-├── Quarto/                      # RevealJS .qmd files + theme
-├── docs/                        # GitHub Pages (auto-generated)
-├── scripts/                     # Utility scripts + R code
+├── Paper/                       # Main paper.tex + appendix.tex
+├── Code/                        # Analysis scripts
+│   ├── baseline/                # Original replication
+│   ├── extensions/              # Your extensions
+│   └── robustness/              # Robustness checks
+├── docs/                        # Documentation
 ├── quality_reports/             # Plans, session logs, merge reports
 ├── explorations/                # Research sandbox (see rules)
 ├── templates/                   # Session log, quality report templates
-└── master_supporting_docs/      # Papers and existing slides
+└── master_supporting_docs/      # Papers and existing materials
 ```
 
 ---
@@ -45,17 +48,20 @@
 ## Commands
 
 ```bash
-# LaTeX (3-pass, XeLaTeX only)
-cd Slides && TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
-BIBINPUTS=..:$BIBINPUTS bibtex file
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
+# LaTeX paper compilation (latexmk)
+latexmk -xelatex -interaction=nonstopmode paper.tex
 
-# Deploy Quarto to GitHub Pages
-./scripts/sync_to_docs.sh LectureN
+# Generate figures
+Rscript Code/baseline/generate_figures.R
+
+# Generate tables
+Rscript Code/baseline/generate_tables.R
+
+# Run replication
+Rscript Code/baseline/replicate_baseline.R
 
 # Quality score
-python scripts/quality_score.py Quarto/file.qmd
+python Code/quality_score.py paper.tex
 ```
 
 ---
@@ -74,25 +80,16 @@ python scripts/quality_score.py Quarto/file.qmd
 
 | Command | What It Does |
 |---------|-------------|
-| `/compile-latex [file]` | 3-pass XeLaTeX + bibtex |
-| `/deploy [LectureN]` | Render Quarto + sync to docs/ |
-| `/extract-tikz [LectureN]` | TikZ → PDF → SVG |
+| `/compile-latex [file]` | Compile LaTeX with latexmk -xelatex |
 | `/proofread [file]` | Grammar/typo/overflow review |
-| `/visual-audit [file]` | Slide layout audit |
-| `/pedagogy-review [file]` | Narrative, notation, pacing review |
-| `/review-r [file]` | R code quality review |
-| `/qa-quarto [LectureN]` | Adversarial Quarto vs Beamer QA |
-| `/slide-excellence [file]` | Combined multi-agent review |
-| `/translate-to-quarto [file]` | Beamer → Quarto translation |
+| `/review-paper [file]` | Manuscript review |
 | `/validate-bib` | Cross-reference citations |
-| `/devils-advocate` | Challenge slide design |
-| `/create-lecture` | Full lecture creation |
 | `/commit [msg]` | Stage, commit, PR, merge |
 | `/lit-review [topic]` | Literature search + synthesis |
 | `/research-ideation [topic]` | Research questions + strategies |
 | `/interview-me [topic]` | Interactive research interview |
-| `/review-paper [file]` | Manuscript review |
-| `/data-analysis [dataset]` | End-to-end R analysis |
+| `/review-r [file]` | R code quality review |
+| `/data-analysis [dataset]` | End-to-end analysis workflow |
 | `/learn [skill-name]` | Extract discovery into persistent skill |
 | `/context-status` | Show session health + context usage |
 | `/deep-audit` | Repository-wide consistency audit |
@@ -103,34 +100,24 @@ python scripts/quality_score.py Quarto/file.qmd
      Beamer environments and Quarto CSS classes. These are examples
      from the original project — delete them and add yours. -->
 
-## Beamer Custom Environments
+## LaTeX Custom Environments
 
 | Environment       | Effect        | Use Case       |
 |-------------------|---------------|----------------|
 | `[your-env]`      | [Description] | [When to use]  |
 
-<!-- Example entries (delete and replace with yours):
-| `keybox` | Gold background box | Key points |
-| `highlightbox` | Gold left-accent box | Highlights |
-| `definitionbox[Title]` | Blue-bordered titled box | Formal definitions |
--->
-
-## Quarto CSS Classes
-
-| Class              | Effect        | Use Case       |
-|--------------------|---------------|----------------|
-| `[.your-class]`    | [Description] | [When to use]  |
-
-<!-- Example entries (delete and replace with yours):
-| `.smaller` | 85% font | Dense content slides |
-| `.positive` | Green bold | Good annotations |
+<!-- Example entries (customize for your paper template):
+| `\begin{theorem}` | Numbered theorem | Formal results |
+| `\begin{proof}` | Proof environment | Derivations |
+| `\begin{assumption}` | Numbered assumption | Model assumptions |
 -->
 
 ---
 
 ## Current Project State
 
-| Lecture | Beamer | Quarto | Key Content |
-|---------|--------|--------|-------------|
-| 1: [Topic] | `Lecture01_Topic.tex` | `Lecture1_Topic.qmd` | [Brief description] |
-| 2: [Topic] | `Lecture02_Topic.tex` | -- | [Brief description] |
+| Paper | Main File | Key Sections |
+|-------|-----------|-------------|
+| [Paper Name] | paper.tex | Introduction, Model, Empirics, Results, Robustness, Conclusion |
+| [Appendix] | appendix.tex | Additional derivations, robustness tables |
+

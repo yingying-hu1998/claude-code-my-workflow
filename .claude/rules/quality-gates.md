@@ -1,8 +1,10 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Quarto/**/*.qmd"
-  - "scripts/**/*.R"
+  - "Paper/**/*.tex"
+  - "Code/**/*.R"
+  - "Code/**/*.py"
+  - "Code/**/*.do"
+  - "Code/**/*.m"
 ---
 
 # Quality Gates & Scoring Rubrics
@@ -12,6 +14,20 @@ paths:
 - **80/100 = Commit** -- good enough to save
 - **90/100 = PR** -- ready for deployment
 - **95/100 = Excellence** -- aspirational
+
+## LaTeX Papers (.tex)
+
+| Severity | Issue | Deduction |
+|----------|-------|-----------|
+| Critical | Compilation failure | -100 |
+| Critical | Undefined citation | -15 |
+| Critical | Overfull hbox in body > 10pt | -10 |
+| Critical | Missing figure/table caption | -10 |
+| Major | Notation inconsistency across sections | -5 |
+| Major | Table/figure numbering inconsistency | -5 |
+| Major | Missing bibliography entry | -5 |
+| Minor | Inconsistent spacing in equations | -2 |
+| Minor | Inconsistent citation format | -1 |
 
 ## Quarto Slides (.qmd)
 
